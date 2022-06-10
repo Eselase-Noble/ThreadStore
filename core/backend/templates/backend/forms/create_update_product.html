@@ -1,0 +1,207 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} {{head}} Product {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Product</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Metrics</a></li>
+                <li class="breadcrumb-item">Product</li>
+                <li class="breadcrumb-item active">{{head}} Product</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Only show bulk upload button when creating a product -->
+                {% if head == 'Create' %}
+                <button class="btn btn-sm btn-primary" id="myBtn">Bulk Upload <span class="bi bi-plus"></span> </button>
+                {% endif %}
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">{{head}} Product Form</h5>
+                        <form class="row g-3" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingName" name="name"
+                                        value="{{product.name}}" required>
+                                    <label for="floatingName">Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <textarea name="description" id="description" class="form-control" cols="30"
+                                        rows="10">{{product.description}}</textarea>
+                                    <label for="description">Description</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <select name="category" id="category" class="form-control">
+                                        {% if categories %}
+                                        {% for category in categories %}
+                                        <option value="{{category.id}}" {% if category.id == product.category.id %}
+                                            selected {% endif %}>{{category.name}}</option>
+                                        {% endfor %}
+                                        {% else %}
+                                        <option>No Category Found!</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="brand" name="brand"
+                                        value="{{product.brand}}" required>
+                                    <label for="brand">Brand</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="price" name="price" min="0" step="0.1"
+                                        value="{{product.price}}" required>
+                                    <label for="price">Price</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <textarea name="key_features" id="key_features" class="form-control" cols="30"
+                                        rows="10">{{product.key_features}}</textarea>
+                                    <label for="key_features">Key Features</label>
+                                </div>
+                            </div>
+
+                            {% if product.image %}
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <img src="{{product.get_image}}" alt="product_image_{{product.prod_id}}"
+                                        class="img-fluid" style="height: 100px; width: auto;">
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="col-md-12">
+                                <h4>Main Image</h4>
+                                <div class="form-group">
+                                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="url" class="form-control" id="slug" name="slug">
+                                    <label for="slug">Image URL</label>
+                                </div>
+                            </div>
+                            {% if perms.dashboard.change_product_status %}
+                            <div class="col-md-12">
+                                <div class="form-check form-check-flat form-check-primary">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="published" value="1" class="form-check-input"
+                                            {% if product.published %} checked {% endif %}>
+                                        Published
+                                    </label>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">{{head}} Product</button>
+                                <button type="reset" class="btn btn-secondary">Clear</button>
+                            </div>
+                        </form><!-- End Form -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+
+
+<!-- modal -->
+<div class="modal" id="myModal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3 class="text-center">Bulk Products Upload</h3>
+
+        <form method="POST" action="{% url 'backend:bulk_upload' %}" class="mt-2" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="csv_file">Products File</label>
+                <input type="file" class="form-control form-control-file" id="csv_file" name="csv_file" accept=".csv">
+            </div>
+            <button class="btn btn-main-primary btn-block" type="submit">Upload</button>
+        </form>
+    </div>
+</div>
+
+<!-- modal style -->
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0.3, 0.2, 0.3, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+
+<script>
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+
+{% endblock %}

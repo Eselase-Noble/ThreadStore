@@ -1,0 +1,98 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} {{head}} Merchant {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Merchant</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Merchant</li>
+                <li class="breadcrumb-item active">{{head}} Merchant</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- merchant creation form starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">{{head}} Merchant Form</h5>
+                        <!-- Floating Labels Form -->
+                        <form class="row g-3" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingName" name="company_name"
+                                        value="{{merchant.company_name}}" required>
+                                    <label for="floatingName">Company Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingName" name="company_phone"
+                                        value="{{merchant.company_phone}}" required>
+                                    <label for="floatingName">Company Phone</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingName" name="company_email"
+                                        value="{{merchant.company_email}}" required>
+                                    <label for="floatingName">Company Email</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <textarea name="company_address" id="company_address" class="form-control" cols="30"
+                                        rows="10">{{merchant.company_address}}</textarea>
+                                    <label for="description">Company Address</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="url" class="form-control" id="company_website" name="company_website"
+                                        value="{{merchant.company_website}}" required>
+                                    <label for="quantity">Company Website</label>
+                                </div>
+                            </div>
+                            {% if merchant.company_logo %}
+                            <div class="col-md-12">
+                                <small>Current Company Logo</small>
+                                <div class="form-floating">
+                                    <img src="{{merchant.company_logo.url}}" alt="merchant_logo_{{product.id}}"
+                                        class="img-fluid" style="height: 100px; width: auto;">
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="col-md-12">
+                                <h4>Company Logo</h4>
+                                <div class="form-group">
+                                    <input type="file" class="form-control" id="company_logo" name="company_logo"
+                                        accept="image/*">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">{{head}} Merchant</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form><!-- End floating Labels Form -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+
+{% endblock %}

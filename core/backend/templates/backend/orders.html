@@ -1,0 +1,93 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Orders {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Orders</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Orders</li>
+                <li class="breadcrumb-item active">Orders/li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- DataTable For Users Starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Orders</h5>
+                        <p>List of <code>all</code> orders placed.</p>
+
+                        <!-- Table with stripped rows -->
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Order ID</th>
+                                        <th scope="col">Buyer</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Payment Method</th>
+                                        <th scope="col">Mobile</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Approved</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if orders %}
+                                    {% for order in orders %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{order.order_id}}</td>
+                                        <td>{{order.user.fullname}}</td>
+                                        <td>{{order.get_amount}}</td>
+                                        <td>{{order.payment_method}}</td>
+                                        <td>{{order.mobile}}</td>
+                                        <td>{{order.location.name}}</td>
+                                        <td>{{order.address}}</td>
+                                        <td>{{order.approved}}</td>
+                                        <td>{% if order.delivered %} Delivered {% else %} {{order.status}} {% endif %}
+                                        </td>
+                                        <td>{{order.created_at|date:"d-m-Y"}}</td>
+                                        {% if perms.dashboard.view_order %}
+                                        <td>
+                                            <a href="{% url 'dashboard_v2:order_details' order.order_id %}"
+                                                class="btn btn-sm btn-primary">View</a>
+                                        </td>
+                                        {% endif %}
+
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="12" class="text-center">No Orders Found!</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

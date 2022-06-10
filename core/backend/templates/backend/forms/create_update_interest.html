@@ -1,0 +1,107 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} {{head}} Interest Rate {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Interest Rate</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Interest</li>
+                <li class="breadcrumb-item active">{{head}} Interest Rate</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- Admin User creation form starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">{{head}} Interest Rate Form</h5>
+                        <!-- Floating Labels Form -->
+                        <form class="row g-3" method="POST">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <h6>Product Category</h6>
+                                <div class="form-floating">
+                                    <select name="category" id="category" class="form-control">
+                                        {% for category in categories %}
+                                        <option value="{{category.id}}" {% if interest.category.id == category.id %}
+                                            selected {% endif %}>
+                                            {{category.title}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <div class="col-md-12">
+                                <h6>Merchant</h6>
+                                <div class="form-floating">
+                                    <select name="merchant" id="merchant" class="form-control">
+                                        {% for merchant in merchants %}
+                                        <option value="{{merchant.id}}" {% if merchant.id == interest.merchant.id %}
+                                            selected {% endif %}>{{merchant.company_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <div class="col-md-12">
+                                <h6>Rate Type</h6>
+                                <div class="form-floating">
+                                    <select name="rate_type" id="" class="form-control">
+                                        <option value="flat" {% if interest.type == 'flat' %} selected {% endif %}>
+                                            FLAT</option>
+                                        <option value="percentage" {% if interest.type == 'percentage' %} selected
+                                            {% endif %}>PERCENTAGE</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="number" min="0" step="0.1" class="form-control" id="min_price"
+                                        name="min_price" placeholder="Min Price" value="{{interest.min_price}}"
+                                        required>
+                                    <label for="min_price">Min Price</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="number" min="0" step="0.1" class="form-control" id="max_price"
+                                        name="max_price" placeholder="Max Price" value="{{interest.max_price}}"
+                                        required>
+                                    <label for="max_price">Max Price</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="number" min="0" step="0.1" class="form-control" id="rate" name="rate"
+                                        placeholder="Rate" value="{{interest.rate}}" required>
+                                    <label for="rate">Rate</label>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">{{head}} Interest Rate</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form><!-- End floating Labels Form -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

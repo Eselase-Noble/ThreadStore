@@ -1,0 +1,99 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Services {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Services</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Services</li>
+                <li class="breadcrumb-item active">Services</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- DataTable For Users Starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Services</h5>
+                        <p>List of <code>all</code> services you render currently.</p>
+
+                        <!-- Table with stripped rows -->
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Summary</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Published</th>
+                                        <th scope="col">Date Added</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if services %}
+                                    {% for service in services %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{service.title}}</td>
+                                        <td>{{service.summary}}</td>
+                                        <td>{{service.description}}</td>
+                                        <td>{{service.published}}</td>
+                                        <td>{{service.created_at}}</td>
+                                        <td>
+                                            {% if perms.dashbaoard.change_service %}
+                                            <a href="{% url 'dashboard_v2:update_service' service.id %}"
+                                                class="btn btn-sm btn-primary" style="display: inline;"><i
+                                                    class="bi bi-pen"></i>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if perms.dashboard.delete_service %}
+                                            <form action="{% url 'dashboard_v2:delete_service' service.id %}"
+                                                method="POST" class="deletion-forms" style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="text" value="{{service.id}}" name="service_id" hidden>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="12" class="mx-auto" class="text-center">No Service Found!
+                                            {% if perms.dashboard.add_service %}
+                                            <a href="{% url 'dashboard_v2:create_service' %}"
+                                                class="btn btn-outline-primary btn-sm">Create Service
+                                            </a> To Continue.
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

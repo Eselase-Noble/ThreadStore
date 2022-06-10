@@ -1,0 +1,101 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Promotions {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Promotions</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Settings</li>
+                <li class="breadcrumb-item active">Promotions</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- DataTable For Promotions -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Promotions</h5>
+                        <p>List of all promotions.</p>
+
+                        <!-- Table with stripped rows -->
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Merchant</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Price Range</th>
+                                        <th scope="col">Rate Type</th>
+                                        <th scope="col">Rate</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if promotions %}
+                                    {% for promotion in promotions %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{promotion.merchant.company_name}}</td>
+                                        <td>{{promotion.category.title}}</td>
+                                        <td>{{promotion.type}}</td>
+                                        <td>{{promotion.get_price_range}}</td>
+                                        <td>{{promotion.get_rate}}</td>
+                                        <td>
+                                            {% if perms.dashboard.change_promotion %}
+                                            <a href="{% url 'dashboard_v2:update_promotion' promotion.id %}"
+                                                class="btn btn-sm btn-primary" style="display: inline;"><i
+                                                    class="bi bi-pen"></i>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if perms.dashboard.delete_promotion %}
+                                            <form action="{% url 'dashboard_v2:delete_promotion' %}" method="POST"
+                                                class="deletion-forms" style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="text" value="{{promotion.id}}" name="promotion_id" hidden>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="12" class="text-center" class="text-center">No Promotion Rate
+                                            Found!
+                                            {% if perms.dashboard.add_promotion %}
+                                            <a href="{% url 'dashboard_v2:create_promotion' %}"
+                                                class="btn btn-outline-primary btn-sm">Create Promotion
+                                            </a>To
+                                            Continue.
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

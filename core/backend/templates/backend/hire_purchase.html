@@ -1,0 +1,107 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Hire Purchase {% endblock %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Hire Purchase</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Transactions</li>
+                <li class="breadcrumb-item active">Hire Purchase</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- DataTable For Users Starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Hire Purchase</h5>
+                        <p>List of <code>all</code> Hire Purchase Transactions.</p>
+                        <div class="table-responsive">
+                            <!-- Table with stripped rows -->
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <!-- <th scope="col">Buyer</th>
+                                        <th scope="col">Seller</th> -->
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Unit Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <!-- <th scope="col">Total Price</th> -->
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Interest</th>
+                                        <th scope="col">Payable</th>
+                                        <th scope="col">Paid</th>
+                                        <th scope="col">Left</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if transactions %}
+                                    {% for transaction in transactions %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <!-- <td>{{transaction.buyer.fullname}}</td>
+                                        <td>{{transaction.seller.fullname}}</td> -->
+                                        <td>{{transaction.product.title}}</td>
+                                        <td>{{transaction.price}}</td>
+                                        <td>{{transaction.quantity}}</td>
+                                        <td>{{transaction.get_total_price|floatformat:2}}</td>
+                                        <td>{{transaction.get_interest_amount|floatformat:2}}</td>
+                                        <!-- <td>{{transaction.interest_rate}}</td> -->
+                                        <td>{{transaction.get_amount_payable|floatformat:2}}</td>
+                                        <td>{{transaction.amount_paid|floatformat:2}}</td>
+                                        <td>{{transaction.get_amount_left|floatformat:2}}</td>
+                                        <td>
+                                            {% if transaction.paid %} <span class="btn btn-success btn-sm">Paid</span>
+                                            {% else %} <span class="btn btn-primary btn-sm">Unpaid</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="" class="btn btn-sm btn-primary" style="display: inline;"><i
+                                                    class="bi bi-pen"></i>
+                                            </a>
+                                            <a href="" class="btn btn-sm btn-primary m-1" style="display: inline;"><i
+                                                    class="bi bi-eye"></i>
+                                            </a>
+                                            <form action="" method="POST" class="deletion-forms"
+                                                style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="text" value="{{transaction.id}}" name="transaction_id"
+                                                    hidden>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="12" class="text-center">No Hire Purchase Transaction Found!</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

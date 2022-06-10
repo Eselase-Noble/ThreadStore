@@ -1,0 +1,91 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Interest Rate {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Interest Rate</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Services</li>
+                <li class="breadcrumb-item active">Interest Rates</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- DataTable For Users Starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Interest</h5>
+                        <p>List of <code>all</code> interest rates on category of products.</p>
+
+                        <!-- Table with stripped rows -->
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Merchant</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Rate Type</th>
+                                        <th scope="col">Price Range</th>
+                                        <th scope="col">Rate</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if interests %}
+                                    {% for interest in interests %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{interest.merchant.company_name}}</td>
+                                        <td>{{interest.category.title}}</td>
+                                        <td>{{interest.type}}</td>
+                                        <td>{{interest.get_price_range}}</td>
+                                        <td>{{interest.get_rate}}</td>
+                                        <td>
+                                            <a href="{% url 'dashboard_v2:update_interest' interest.id %}"
+                                                class="btn btn-sm btn-primary" style="display: inline;"><i
+                                                    class="bi bi-pen"></i></a>
+                                            <form action="{% url 'dashboard_v2:delete_interest' %}" method="POST"
+                                                class="deletion-forms" style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="text" value="{{interest.id}}" name="interest_id" hidden>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="12" class="text-center" class="text-center">No Interest Rate Found!
+                                            <a href="{% url 'dashboard_v2:create_interest_rate' %}"
+                                                class="btn btn-outline-primary btn-sm">Create Interest Rate
+                                            </a>To
+                                            Continue.</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

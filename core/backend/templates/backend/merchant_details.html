@@ -1,0 +1,209 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Merchant Details {% endblock %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>{{merchant.company_name}}</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Merchant</li>
+                <li class="breadcrumb-item active">Details</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- merchant details -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div>
+                    {% if perms.dashboard.change_merchant %}
+                    <a href="{% url 'dashboard_v2:update_merchant' merchant.id %}"
+                        class="btn btn-primary btn-sm text-right"><span class="bi bi-plus">Edit</span>
+                    </a>
+                    {% endif %}
+
+                    {% if perms.dashboard.delete_merchant %}
+                    <form action="{% url 'dashboard_v2:delete_merchant' %}" method="POST" class="deletion-forms"
+                        style="display: inline;">
+                        {% csrf_token %}
+                        <input type="text" value="{{merchant.id}}" name="merchant_id" hidden>
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Company Details</h5>
+                        <div class="row">
+                            <!-- <br> -->
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <div class="bg-image hover-overlay ripple shadow-1-strong rounded"
+                                    data-ripple-color="light">
+                                    <img src="{% if merchant.company_logo %}{{merchant.company_logo.url}}{% else %}{%  static 'assets/img/card.jpg' %} {% endif %}"
+                                        class="w-100 img-responsive />
+                                    <a href=" #!" data-mdb-toggle="modal" data-mdb-target="#exampleModal1">
+                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2);"></div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Company Name</b>
+                                <p class="card-text m-0">{{merchant.company_name}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Company Phone</b>
+                                <p class="card-text m-0">{{merchant.company_phone}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Company Email</b>
+                                <p class="card-text m-0">{{merchant.company_email}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Company Address</b>
+                                <p class="card-text m-0">{{merchant.company_address}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Company Website</b>
+                                <p class="card-text m-0">{{merchant.company_website}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Date Created</b>
+                                <p class="card-text m-0">{{merchant.date_created}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Date Modified</b>
+                                <p class="card-text m-0">{{merchant.date_modified}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Modified By</b>
+                                <p class="card-text m-0">{{merchant.modified_by.fullname}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Approval Status</b>
+                                {% if merchant.approved %}
+                                <p class="py-1 px-2 text-white"
+                                    style="border-radius: 5px; background: rgba(0, 250, 0, 0.9);">
+                                    Approved</p>
+                                {% else %}
+                                <p class="py-1 px-2 text-white"
+                                    style="border-radius: 5px; background-color: rgba(109, 24, 24,0.8);">Not Approved
+                                </p>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Live Status</b>
+                                {% if merchant.live %}
+                                <p class="py-1 px-2 text-white"
+                                    style="border-radius: 5px; background: rgba(0, 0, 255, 0.9);">
+                                    Live</p>
+                                {% else %}
+                                <p class="py-1 px-2 text-white"
+                                    style="border-radius: 5px; background-color: rgba(109, 24, 24,0.8);">Not Live
+                                </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- NEW IMAGE PREVIEW -->
+                        <h5 class="card-title">Owner Details</h5>
+                        <div class="row">
+                            <!-- <br> -->
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <div class="bg-image hover-overlay ripple shadow-1-strong rounded"
+                                    data-ripple-color="light">
+                                    <img src="{% if owner.photo %}{{owner.photo.url}}{% else %}{%  static 'assets/img/card.jpg' %} {% endif %}"
+                                        class="w-100 img-responsive" />
+                                    <a href="#!" data-mdb-toggle="modal" data-mdb-target="#exampleModal1">
+                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2);"></div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Username</b>
+                                <p class="card-text m-0">{{owner}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Fullname</b>
+                                <p class="card-text m-0">{{owner.fullname}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Email</b>
+                                <p class="card-text m-0">{{owner.email_address}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Phone</b>
+                                <p class="card-text m-0">{{owner.phone}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Country</b>
+                                <p class="card-text m-0">{{owner.country}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Facebook</b>
+                                <p class="card-text m-0">{{owner.facebook}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Instagram</b>
+                                <p class="card-text m-0">{{owner.instagram}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Twitter</b>
+                                <p class="card-text m-0">{{owner.twitter}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>LinkIn</b>
+                                <p class="card-text m-0">{{owner.linkedIn}}</p>
+                            </div>
+
+                            <div class="col-lg-6 col-md-12 mb-6 mb-lg-0">
+                                <b>About</b>
+                                <p><i>{{owner.about}}</i></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <h5 class="card-title">Settings</h5>
+                        <div class="row">
+                            <div class="col-md-6 p-2">
+                                <div class="bg-white p-4">
+                                    {% if perms.dashboard.change_merchant %}
+                                    <h5>STATUS</h5>
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="merchant_id" value="{{merchant.id}}">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" name="approved"
+                                                id="approved" value="1" {% if merchant.approved %}checked{% endif %}>
+                                            <label class="form-check-label" for="approved">Approved</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" name="live" id="live"
+                                                value="1" {% if merchant.live %}checked{% endif %}>
+                                            <label class="form-check-label" for="pending">Live</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <button type="submit" class="btn btn-sm btn-primary"><i
+                                                    class="bi bi-save"></i>
+                                                Save</button>
+                                        </div>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

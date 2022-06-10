@@ -1,0 +1,104 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} Add Staff Member {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Accounts</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Metrics</a></li>
+                <li class="breadcrumb-item">Accounts</li>
+                <li class="breadcrumb-item active">Add A Staff</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Add A New Staff Member</h5>
+                        <form class="row g-3" method="POST">
+                            {% csrf_token %}
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="floatingEmail" name="email"
+                                        placeholder="Email">
+                                    <label for="floatingEmail">Staff Email</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingName" name="name"
+                                        placeholder="Username" required>
+                                    <label for="floatingName">Staff Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingName" name="phone"
+                                        placeholder="Username" required>
+                                    <label for="floatingName">Staff Phone</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" name="password" id="password"
+                                        placeholder="Password">
+                                    <label for="password">Password</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="password2"
+                                        placeholder="Comfirm Password">
+                                    <label for="password2">Confirm Password</label>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary" onclick="checkPasswordMatch()">Add
+                                    Admin</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form><!-- End floating Labels Form -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+
+<script>
+    // Check if password and password2 are same
+    $(document).ready(function () {
+        $('#password2').keyup(function () {
+            if ($('#password').val() == $('#password2').val()) {
+                $('#password2').css('border-color', 'green');
+            } else {
+                $('#password2').css('border-color', 'red');
+            }
+        });
+    });
+
+    let checkPasswordMatch = () => {
+        const password = document.getElementById('password');
+        const confirm_password = document.getElementById('password2');
+        if (password.value !== confirm_password.value) {
+            confirm_password.setCustomValidity('Passwords do not match.');
+        }
+    }
+</script>
+
+{% endblock %}

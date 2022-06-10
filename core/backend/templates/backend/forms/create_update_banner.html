@@ -1,0 +1,118 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} Create Banner {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Banner</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Metrics</a></li>
+                <li class="breadcrumb-item">Banner</li>
+                <li class="breadcrumb-item active">Create Banner</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- Admin User creation form starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Banner Creation Form</h5>
+                        <!-- Floating Labels Form -->
+                        <form class="row g-3" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingName" name="title"
+                                        placeholder="Category Title" required>
+                                    <label for="floatingName">Title</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="product_id" name="product_id"
+                                        placeholder="Product ID">
+                                    <label for="product_id">Product ID</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="link" name="link" placeholder="Link">
+                                    <label for="link">Link</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <!-- radio buttons -->
+                                    <div class="form-group">
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="published"
+                                                    id="published" value="1" checked>
+                                                Published
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="published"
+                                                    id="published" value="0">
+                                                Unpublished
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="floating-label">
+                                    <h6>Banner Image</h6>
+                                    <input type="file" name="image" id="image" accept="image/*" required>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Create Banner</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form><!-- End floating Labels Form -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+
+<script>
+    // Check if floatingpassword and floatingpassword2 are same
+    $(document).ready(function () {
+        $('#floatingPassword2').keyup(function () {
+            if ($('#floatingPassword').val() == $('#floatingPassword2').val()) {
+                $('#floatingPassword2').css('border-color', 'green');
+            } else {
+                $('#floatingPassword2').css('border-color', 'red');
+            }
+        });
+    });
+
+    let checkPasswordMatch = () => {
+        const password = document.getElementById('floatingPassword');
+        const confirm_password = document.getElementById('floatingPassword2');
+        if (password.value !== confirm_password.value) {
+            confirm_password.setCustomValidity('Passwords do not match.');
+        }
+    }
+</script>
+
+{% endblock %}

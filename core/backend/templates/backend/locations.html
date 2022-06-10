@@ -1,0 +1,85 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Locations {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Locations</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Locations</li>
+                <li class="breadcrumb-item active">Available Locations</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- DataTable For Users Starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Accounts</h5>
+                        <p>List of <code>all</code> available delivery locations on the platform currently.</p>
+
+                        <div class="table-responsive">
+                            <!-- Table with stripped rows -->
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Rate</th>
+                                        <th scope="col">Date Added</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if locations %}
+                                    {% for location in locations %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{location.name}}</td>
+                                        <td>{{location.rate}}</td>
+                                        <td>{{location.created_at}}</td>
+                                        <td>
+                                            <a href="{% url 'dashboard_v2:update_location' location.id %}"
+                                                class="btn btn-sm btn-primary">Edit</a>
+                                            <form action="{% url 'dashboard_v2:delete_location' location.id %}"
+                                                method="POST" class="deletion-forms" style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="text" value="{{location.id}}" name="location" hidden>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="12" class="text-center">No Locations Found! <a
+                                                href="{% url 'dashboard_v2:create_location' %}"
+                                                class="btn btn-outline-primary btn-sm">Add Location </a>To
+                                            Continue.</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

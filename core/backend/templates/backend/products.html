@@ -1,0 +1,113 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} Products {% endblock %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Products</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Metrics</a></li>
+                <li class="breadcrumb-item">Products</li>
+                <li class="breadcrumb-item active">Products</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- DataTable For Users Starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Products</h5>
+                        <p>Available Products.</p>
+                        <div class="table-responsive">
+                            <!-- Table with stripped rows -->
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Product Image</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Brand</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Date Created</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if products %}
+                                    {% for product in products %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>
+                                            <img src="{{product.get_image}}" alt="product_image"
+                                                class="img-fluid rounded" style="height: 50px;
+                                                width: auto;">
+                                        </td>
+                                        <td>{{product.name}}</td>
+                                        <td>{{product.brand}}</td>
+                                        <td>{{product.category.name}}</td>
+                                        <td>{% if product.published %}
+                                            <a href=" javascript:void(0)" class="btn btn-success btn-sm">Published</a>
+                                            {% else %}
+                                            <a href="javascript:void(0)" class="btn btn-primary btn-sm">Draft</a>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{product.price}}</td>
+                                        <td>{{product.created_at}}</td>
+                                        <td>
+                                            {% if perms.dashboard.change_product %}
+                                            <a href="{% url 'backend:update_product' product.prod_id %}"
+                                                class="btn btn-sm btn-primary" style="display: inline;"><i
+                                                    class="bi bi-pen"></i>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if perms.dashboard.view_product %}
+                                            <a href="{% url 'backend:product_detail' product.prod_id %}"
+                                                class="btn btn-sm btn-primary m-1" style="display: inline;"><i
+                                                    class="bi bi-eye"></i>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if perms.dashboard.delete_product %}
+                                            <form action="{% url 'backend:delete_product' %}" method="POST"
+                                                class="deletion-forms" style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="text" value="{{product.prod_id}}" name="product_id" hidden>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="12" class="text-center">No Product Found!
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

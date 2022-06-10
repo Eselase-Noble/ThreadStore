@@ -1,0 +1,60 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} Banners {% endblock %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Banners</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Metrics</a></li>
+                <li class="breadcrumb-item">Banners</li>
+                <li class="breadcrumb-item active">Banners</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- List of categorie -->
+    <section class="section">
+        <div class="row align-items-top">
+            {% for banner in banners %}
+            <div class="col-lg-3">
+                <!-- Card with an image on top -->
+                <div class="card">
+                    <img src="{{banner.get_image}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{banner.title}}</h5>
+                        {% if banner.published %}
+                        <a href="javascript:void(0)" class="btn btn-outline-success btn-sm">Published</a>
+                        {% else %}
+                        <a href="javascript:void(0)" class="btn btn-outline-danger btn-sm">Not Published</a>
+                        {% endif %}
+
+                        <div class="container row d-flex justify-content-center mt-2">
+                            {% if perms.dashboard.change_product %}
+                            <div class="col-6 m-0 p-0">
+                                <a href="" class="btn btn-outline-primary btn-round btn-sm text-left"><i
+                                        class="bi bi-pen"></i></a>
+                            </div>
+                            {% endif %}
+
+                            {% if perms.dashboard.delete_banner %}
+                            <div class="col-6 m-0 p-0">
+                                <a href="" class="btn btn-outline-primary btn-round btn-sm text-left"><i
+                                        class="bi bi-trash"></i></a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div><!-- End Card with an image on top -->
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

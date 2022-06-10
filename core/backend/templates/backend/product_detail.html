@@ -1,0 +1,210 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} Product Detail {% endblock %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>{{product.title}}</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Metrics</a></li>
+                <li class="breadcrumb-item">Product</li>
+                <li class="breadcrumb-item active">{{product.prod_id}}</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div>
+                    {% if perms.backend.change_product %}
+                    <a href="{% url 'backend:update_product' product.prod_id %}"
+                        class="btn btn-primary btn-sm text-right"><span class="bi bi-plus">Edit</span>
+                    </a>
+                    {% endif %}
+
+                    {% if perms.backend.delete_product %}
+                    <form action="{% url 'backend:delete_product' %}" method="POST" class="deletion-forms"
+                        style="display: inline;">
+                        {% csrf_token %}
+                        <input type="text" value="{{product.id}}" name="product_id" hidden>
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Product Preview</h5>
+                        <div class="container text-center">
+                            <img src="{% if product.image %}{{product.image.url}}{% else %}{% static 'assets/img/product-5.jpg' %}{% endif %}"
+                                alt="" style="height: 350px; width: auto;" class="img-fluid">
+                        </div>
+                        <hr>
+                        <!-- NEW IMAGE PREVIEW -->
+                        <div class="row" style="overflow-x: scroll;">
+                            {% for image in images %}
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <div class="bg-image hover-overlay ripple shadow-1-strong rounded"
+                                    data-ripple-color="light">
+                                    <img src="{{image.file.url}}" class="w-100 img-responsive" />
+                                    <form action="{% url 'backend:delete_product_image' %}" class="my-0 deletion-forms"
+                                        method="POST">
+                                        {% csrf_token %}
+                                        <input type="text" value="{{image.id}}" name="product_image_id"
+                                            id="product_image_id" hidden>
+                                        <button type="submit" class="btn btn-danger btn-block btn-sm"
+                                            style="width: 100%;">delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div class=" col-12 my-2">
+                                <a href="" class="btn btn-primary btn-block btn-sm"> <span class="bi bi-plus"></span>
+                                    Upload
+                                    More
+                                    Images</a>
+                            </div>
+                        </div>
+                        <!-- NEW IMAGE PREVIEW -->
+                        <div class="row">
+                            <!-- <br> -->
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Name</b>
+                                <p class="card-text m-0">{{product.name}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Description</b>
+                                <p class="card-text m-0">{{product.description|safe}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Price</b>
+                                <p class="card-text m-0">{{product.price}}</p>
+                            </div>
+
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Promotion Rate</b>
+                                <p class="card-text m-0">{{product.get_promotion_rate}}</p>
+                            </div>
+
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Category</b>
+                                <p class="card-text m-0">{{product.category.title}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Status</b>
+                                <p class="card-text m-0">{% if product.published %} Published {% else %} Draft
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Views</b>
+                                <p class="card-text m-0">{{product.views}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Rating</b>
+                                <p>
+                                    {% for star in stars %}
+                                    <span class="bi bi-star-fill text-primary"></span>
+                                    {% endfor %}
+                                    {% for star in empty_stars %}
+                                    <span class="bi bi-star"></span>
+                                    {% endfor %}
+                                </p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Total Rating</b>
+                                <p class="card-text m-0">{{product.get_rating}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                                <b>Merchant</b>
+                                <p class="card-text m-0">{{product.merchant.merchant.company_name}}</p>
+                            </div>
+                        </div>
+                        <!-- details end -->
+                        <hr>
+                        <!-- review -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="bg-white">
+                                    <h5 class="card-title">Product Reviews</h5>
+                                    <p>List of reviews on product</p>
+                                    <div class="table-responsive">
+                                        <!-- Table with stripped rows -->
+                                        <table class="table datatable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Comment</th>
+                                                    <th scope="col">Stars</th>
+                                                    <th scope="col">Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% if reviews %}
+                                                {% for review in reviews %}
+                                                <tr>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td>{{review.product.name}}</td>
+                                                    <td>{{review.comment}}</td>
+                                                    <td>
+                                                        {% for star in stars %}
+                                                        <span class="bi bi-star text-primary"></span>
+                                                        {% endfor %}
+                                                        {% for star in empty_stars %}
+                                                        <span class="bi bi-star"></span>
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>
+                                                        {{review.created_at|date:"d-m-Y"}}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                {% else %}
+                                                <tr>
+                                                    <td colspan="12" class="text-center">No Review Found!</td>
+                                                </tr>
+                                                {% endif %}
+                                            </tbody>
+                                        </table>
+                                        <!-- End Table with stripped rows -->
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- review ends-->
+                        <hr>
+                        {% if perms.backend.change_product_status %}
+                        <div class="row">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="form-check form-check-flat form-check-primary form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="text" value="{{product.prod_id}}" name="prod_id" hidden>
+                                        <input type="checkbox" name="published" value="1" class="form-check-input"
+                                            {% if product.published %} checked {% endif %}>
+                                        Published
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <button class="btn btn-sm btn-primary"><i class="bi bi-save"></i> Save</button>
+                                </div>
+                            </form>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

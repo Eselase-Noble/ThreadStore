@@ -1,0 +1,79 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Disbursement {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Transactions</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Transactions</li>
+                <li class="breadcrumb-item active">Disburse To Merchant</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- Admin User creation form starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="">
+                    {% if perms.dashboard.credit_wallet %}
+                    <a href="{% url 'dashboard_v2:make_disbursement' %}" class="btn btn-primary btn-sm text-right"><span
+                            class="bi bi-plus">Disburse To
+                            User</span>
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Disburse To Merchant</h5>
+                        <!-- Floating Labels Form -->
+                        <form class="row g-3" method="POST">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="merchant">Merchant</label>
+                                    <select name="merchant" id="merchant" class="form-control">
+                                        {% for merchant in merchants %}
+                                        <option value="{{ merchant.id }}">{{ merchant.company_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="amount">Amount</label>
+                                    <input type="number" name="amount" id="amount" min="0" class="form-control"
+                                        placeholder="Enter amount" step="0.1" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="note">Note</label>
+                                    <textarea name="note" id="note" cols="30" rows="5" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Disburse</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form><!-- End floating Labels Form -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

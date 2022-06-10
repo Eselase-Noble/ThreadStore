@@ -1,0 +1,113 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} Merchants {% endblock %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Merchants</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Metrics</a></li>
+                <li class="breadcrumb-item">Merchants</li>
+                <li class="breadcrumb-item active">All Merchants</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- DataTable For Users Starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Merchants</h5>
+                        <p>List of all merchants selling on your platform.</p>
+
+                        <!-- Table with stripped rows -->
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Company Logo</th>
+                                        <th scope="col">Company Name</th>
+                                        <th scope="col">Company Phone</th>
+                                        <th scope="col">Company Address</th>
+                                        <th scope="col">Company Email</th>
+                                        <th scope="col">Approval Status</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if merchants %}
+                                    {% for merchant in merchants %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>
+                                            <img src="{{merchant.get_image}}" alt="{{merchant.company_name}}"
+                                                class="img-fluid rounded" style="height: 50px; width: auto;">
+                                        </td>
+                                        <td>{{merchant.company_name}}</td>
+                                        <td>{{merchant.company_phone}}</td>
+                                        <td>{{merchant.company_address}}</td>
+                                        <td>{{merchant.company_email}}</td>
+                                        <td>{% if merchant.approved %} <a href="javascript:void(0)"
+                                                class="btn btn-primary btn-sm">Approved</a>{% else %}<a
+                                                href="javascript:void(0)" class="btn btn-danger btn-sm">Pending</a>
+                                            {% endif %} </td>
+                                        <td>
+                                            <div class="row justify-content-center">
+
+                                                {% if perms.dashboard.view_merchant %}
+                                                <div class="col-2 mx-1 py-0">
+                                                    <a href="" class="btn btn-sm btn-primary btn-sm"><span
+                                                            class="bi bi-eye"></span></a>
+                                                </div>
+                                                {% endif %}
+
+                                                {% if perms.dashboard.change_merchant %}
+                                                <div class="col-2 mx-2 py-0">
+                                                    <a href="" class="btn btn-success btn-sm"><span
+                                                            class="bi bi-pen"></span></a>
+                                                </div>
+                                                {% endif %}
+
+                                                {% if perms.dashboard.delete_merchant %}
+                                                <form action="" method="POST"
+                                                    data-message="Permanently delete this merchant?"
+                                                    class="deletion-forms col-2 mx-1 py-0">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" value="{{merchant.id}}" name="merchant_id"
+                                                        id="merchant_id">
+                                                    <button class="btn btn-danger btn-sm" type="submit"><span
+                                                            class="bi bi-trash"></span></button>
+                                                </form>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="12" class="text-center">No Merchant Found!</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

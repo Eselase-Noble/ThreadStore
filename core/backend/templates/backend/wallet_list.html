@@ -1,0 +1,77 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Wallets {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Wallets</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Financial</li>
+                <li class="breadcrumb-item active">Wallets</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- DataTable For Users Starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Wallets</h5>
+                        <p>List of all Wallets.</p>
+
+                        <!-- Table with stripped rows -->
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Wallet ID</th>
+                                        <th scope="col">Company Name</th>
+                                        <th scope="col">Account Holder</th>
+                                        <th scope="col">Balance</th>
+                                        <th scope="col">Live</th>
+                                        <th scope="col">Date Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if wallets %}
+                                    {% for wallet in wallets %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{wallet.wallet_id}}</td>
+                                        <td>{{wallet.company.company_name}}</td>
+                                        <td>{{wallet.merchant.fullname}}</td>
+                                        <td>₵ {{wallet.get_main_balance}}</td>
+                                        <td>{{wallet.company.live}}</td>
+                                        <td>{{wallet.date_added}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="12" class="mx-auto">No Users Found! <a href="">Add Users </a>To
+                                            Continue.</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

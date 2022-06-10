@@ -1,0 +1,61 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} More Images {% endblock %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+
+    <div class="pagetitle">
+        <h2 class="h2">{{product.name}}</h2>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Metrics</a></li>
+                <li class="breadcrumb-item">Product</li>
+                <li class="breadcrumb-item active">Add Images</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Extra Product Images</h5>
+                        <form class="row g-3" action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-md-12" style="overflow-x: scroll;">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <img src="{{product.get_image}}" alt="" class="img-responsive"
+                                            style="height: 80px; width: auto;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="floating-label">
+                                    <h6>Images</h6>
+                                    <small>You can select multiple images at a go.</small>
+                                    <input type="file" name="images" id="images" accept="image/*" multiple>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Add Images To Product</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form><!-- End floating Labels Form -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

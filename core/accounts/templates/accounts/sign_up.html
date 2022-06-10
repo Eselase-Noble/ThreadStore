@@ -1,0 +1,79 @@
+{% extends 'accounts/base.html' %}
+{% block pagetitle %} Sign Up {% endblock %}
+{% load static %}
+{% block content %}
+<!-- NOTE STARTS -->
+<div class="card-sigin mt-2">
+    <div class="main-signup-header">
+        <!-- message -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <h5 class="fw-semibold mb-4 text-primary">It takes a few minutes to sign up</h5>
+        <form action="{% url 'accounts:sign_up' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="fullname">Fullname</label>
+                <input class="form-control" id="name" name="name" value="{{name}}" placeholder="Enter fullname"
+                    type="text" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input class="form-control" id="phone" name="phone" value="{{phone}}" placeholder="Enter phone number"
+                    type="text" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input class="form-control" id="email" name="email" value="{{email}}" placeholder="Enter Email"
+                    type="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Photo</label>
+                <input class="form-control" id="photo" name="photo" type="file" accept="image/*">
+            </div>
+            <br>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input class="form-control" id="password" name="password" placeholder="Enter your password"
+                    type="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input class="form-control" id="confirm-password" name="confirm_password" placeholder="Confirm Password"
+                    type="password">
+            </div>
+            <button class="btn btn-main-primary btn-block" onclick="matchPassword()" type="submit">Sign Up</button>
+
+        </form>
+        <div class="main-signin-footer mt-5">
+            <p>Already have an account? <a href="">Login</a></p>
+        </div>
+    </div>
+</div>
+<!--  ENDS -->
+
+
+<script>
+    // confirm password and password confirmation
+    const matchPassword = () => {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        if (password !== confirmPassword) {
+            document.getElementById('confirm-password').setCustomValidity('Passwords do not match.');
+        } else {
+            pass
+        }
+    }
+</script>
+
+
+{% endblock %}

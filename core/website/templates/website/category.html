@@ -1,0 +1,161 @@
+{% extends 'website/base_category.html' %}
+{% load static %}
+{% block title %} Category {% endblock %}
+{% block content %}
+<!-- Main Section-->
+<section class="mt-0 ">
+
+    <!-- Category Top Banner -->
+    <div class="py-6 bg-img-cover bg-dark bg-overlay-gradient-dark position-relative overflow-hidden mb-4 bg-pos-center-center"
+        style="background-image: url({% static '/assets/images/banners/banner-1.jpg' %});">
+        <div class="container position-relative z-index-20" data-aos="fade-right" data-aos-delay="300">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item breadcrumb-light"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item breadcrumb-light"><a href="#">Categories</a></li>
+                    <li class="breadcrumb-item active breadcrumb-light" aria-current="page">{{category.name}}</li>
+                </ol>
+            </nav>
+            <h1 class="fw-bold display-6 mb-4 text-white">{{category.name}} ({{category.get_num_of_products}})</h1>
+            <div class="col-12 col-md-6">
+                <p class="lead text-white mb-0">
+                    {{category.description|safe}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Category Top Banner -->
+
+    <div class="container">
+
+        <div class="row">
+
+
+            <!-- Category Products-->
+            <div class="col-12 col-lg-9 mx-auto">
+
+                <!-- Top Toolbar-->
+                <div class="mb-4 d-md-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-start align-items-center flex-grow-1 mb-4 mb-md-0">
+                        <small class="d-inline-block fw-bolder">Filtered by:</small>
+                        <ul class="list-unstyled d-inline-block mb-0 ms-2">
+                            <li class="bg-light py-1 fw-bolder px-2 cursor-pointer d-inline-block me-1 small">Type: Slip
+                                On <i class="ri-close-circle-line align-bottom ms-1"></i></li>
+                        </ul>
+                        <span
+                            class="fw-bolder text-muted-hover text-decoration-underline ms-2 cursor-pointer small">Clear
+                            All</span>
+                    </div>
+                    <div class="d-flex align-items-center flex-column flex-md-row">
+                        <!-- Filter Trigger-->
+                        <button
+                            class="btn bg-light p-3 d-flex d-lg-none align-items-center fs-xs fw-bold text-uppercase w-100 mb-2 mb-md-0 w-md-auto"
+                            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters"
+                            aria-controls="offcanvasFilters">
+                            <i class="ri-equalizer-line me-2"></i> Filters
+                        </button>
+                        <!-- / Filter Trigger-->
+                        <div class="dropdown ms-md-2 lh-1 p-3 bg-light w-100 mb-2 mb-md-0 w-md-auto">
+                            <p class="fs-xs fw-bold text-uppercase text-muted-hover p-0 m-0" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Sort By <i
+                                    class="ri-arrow-drop-down-line ri-lg align-bottom"></i></p>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2"
+                                        href="#">Price: Hi Low</a></li>
+                                <li><a class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2"
+                                        href="#">Price: Low Hi</a></li>
+                                <li><a class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2"
+                                        href="#">Name</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> <!-- / Top Toolbar-->
+
+                <!-- Products-->
+                <div class="row g-4 mb-5">
+
+                    {% for product in products %}
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <!-- Card Product-->
+                        <div class="card position-relative h-100 card-listing hover-trigger">
+                            <span class="badge card-badge bg-secondary">-25%</span>
+                            <div class="card-header">
+                                <picture class="position-relative overflow-hidden d-block bg-light">
+                                    <img class="w-100 img-fluid position-relative z-index-10" title="" src="{% if product.image %} {{product.image.url}} {% else %}
+                                        {% static '/assets/images/products/product-2.jpg' %} {% endif %} " alt="">
+                                </picture>
+
+                            </div>
+                            <div class="card-body px-0 text-center">
+                                <div class="d-flex justify-content-center align-items-center mx-auto mb-1">
+                                    <!-- Review Stars Small-->
+                                    <div class="rating position-relative d-table">
+                                        <div class="position-absolute stars" style="width: 60%">
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                        </div>
+                                        <div class="stars">
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                        </div>
+                                    </div> <span class="small fw-bolder ms-2 text-muted"> {{product.get_rating}}
+                                        (1289)</span>
+                                </div>
+                                <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center"
+                                    href="{% url 'website:product' product.prod_id %}">{{product.name}}</a>
+                                <div class="d-flex justify-content-center align-items-center mt-2">
+                                    <p class="mb-0 me-2 text-danger fw-bolder">$<span>{{product.price}}</span></p>
+                                    <p class="mb-0 text-muted fw-bolder"><s>$<span>150.00</span></s></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Card Product-->
+                    </div>
+                    {% endfor %}
+
+                </div>
+                <!-- / Products-->
+
+                <!-- Pagiation-->
+                <!-- Pagination-->
+                <nav class="border-top mt-5 pt-5 d-flex justify-content-between align-items-center"
+                    aria-label="Category Pagination">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#"><i
+                                    class="ri-arrow-left-line align-bottom"></i> Prev</a></li>
+                    </ul>
+                    <ul class="pagination">
+                        <li class="page-item active mx-1"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item mx-1"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item mx-1"><a class="page-link" href="#">3</a></li>
+                    </ul>
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Next <i
+                                    class="ri-arrow-right-line align-bottom"></i></a></li>
+                    </ul>
+                </nav> <!-- / Pagination-->
+
+                <!-- Related Categories-->
+                <div class="border-top mt-5 pt-5">
+                    <p class="lead fw-bolder">Other Categories</p>
+                    <div class="d-flex flex-wrap justify-content-start align-items-center">
+                        {% for category in categories %}
+                        <a class="btn btn-sm btn-outline-dark rounded-pill me-2 mb-2 mb-md-0 text-white-hover"
+                            href="{% url 'website:category' category.id %}">{{category.name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Related Categories-->
+            </div>
+            <!-- / Category Products-->
+        </div>
+    </div>
+</section>
+<!-- / Main Section-->
+{% endblock %}

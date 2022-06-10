@@ -1,0 +1,54 @@
+{% extends 'backend/base.html' %}
+
+{% block pagetitle %} {{head}} Category {% endblock %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Categories</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'backend:dashboard' %}">Metrics</a></li>
+                <li class="breadcrumb-item">Category</li>
+                <li class="breadcrumb-item active">Add Category</li>
+            </ol>
+        </nav>
+    </div><!-- /breadcrumb -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Create Product Category</h5>
+                        <form class="row g-3" method="POST">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingName" name="name"
+                                        placeholder="Category Name" required>
+                                    <label for="floatingName">Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <p>Description of Category</p>
+                                <div class="form-floating">
+                                    <textarea name="description" id="description" class="form-control"
+                                        placeholder="Description of Category" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">{{head}} Category</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form><!-- End floating Labels Form -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Update Category {% endblock %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Category</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Category</li>
+                <li class="breadcrumb-item active">Update Category</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- Admin User creation form starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Category Creation Form</h5>
+                        <!-- Floating Labels Form -->
+                        <form class="row g-3" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingName" name="title"
+                                        value="{{category.title}}" required>
+                                    <label for="floatingName">Title</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <img src="{% if category.image %} {{category.image.url}} {% else %} {% static 'assets/img/card.jpg' %} {% endif %}"
+                                    class="img-fluid" alt="" style="height: 150px; width: auto;">
+                            </div>
+                            <div class="col-md-12">
+                                <div class="floating-label">
+                                    <h6>Image</h6>
+                                    <input type="file" name="image" id="image" accept="image/*">
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Update Category</button>
+                            </div>
+                        </form><!-- End floating Labels Form -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+
+
+{% endblock %}

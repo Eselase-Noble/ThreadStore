@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+
+<!-- Head -->
+
+<head>
+    <!-- Page Meta Tags-->
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+
+    <!-- django static files -->
+    {% load static %}
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/assets/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '/assets/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/assets/favicon/favicon-16x16.png' %}">
+    <link rel="mask-icon" href="{% static '/assets/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="{% static '/assets/css/libs.bundle.css' %}" />
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static '/assets/css/theme.bundle.css' %}" />
+
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Fix for custom scrollbar if JS is disabled-->
+    <noscript>
+        <style>
+            /**
+          * Reinstate scrolling for non-JS clients
+          */
+            .simplebar-content-wrapper {
+                overflow: auto;
+            }
+        </style>
+    </noscript>
+
+    <!-- Page Title -->
+    <title>Jamilahome | {% block title %} Product {% endblock %} </title>
+
+</head>
+
+<body class="">
+
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom mx-0 p-0 flex-column  ">
+        <div class="w-100 pb-lg-0 pt-lg-0 pt-4 pb-3">
+            <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
+
+                <!-- Logo-->
+                <a class="navbar-brand fw-bold fs-3 m-0 p-0 flex-shrink-0" href="./index.html">
+                    <!-- Start of Logo-->
+                    <div class="d-flex align-items-center">
+                        <div class="f-w-6 d-flex align-items-center me-2 lh-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194">
+                                <path fill="currentColor" class="svg-logo-white"
+                                    d="M47.45,60l1.36,27.58,53.41-51.66,50.87,50,3.84-26L194,100.65V31.94A31.94,31.94,0,0,0,162.06,0H31.94A31.94,31.94,0,0,0,0,31.94v82.57Z" />
+                                <path fill="currentColor" class="svg-logo-dark"
+                                    d="M178.8,113.19l1,34.41L116.3,85.92l-14.12,15.9L88.07,85.92,24.58,147.53l.93-34.41L0,134.86v27.2A31.94,31.94,0,0,0,31.94,194H162.06A31.94,31.94,0,0,0,194,162.06V125.83Z" />
+                            </svg>
+                        </div> <span class="fs-5">Jamilahome</span>
+                    </div>
+                    <!-- / Logo-->
+
+                </a>
+                <!-- / Logo-->
+
+                <!-- Main Navigation-->
+                <div class="ms-5 flex-shrink-0 collapse navbar-collapse navbar-collapse-light w-auto flex-grow-1"
+                    id="navbarNavDropdown">
+
+                    <!-- Mobile Nav Toggler-->
+                    <button
+                        class="btn btn-link px-2 text-decoration-none navbar-toggler border-0 position-absolute top-0 end-0 mt-3 me-2"
+                        data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="ri-close-circle-line ri-2x"></i>
+                    </button>
+                    <!-- / Mobile Nav Toggler-->
+
+                    <ul class="navbar-nav py-lg-2 mx-auto">
+                        <li class="nav-item me-lg-4">
+                            <a class="nav-link fw-bolder py-lg-4" href="{% url 'website:index' %}">
+                                Home
+                            </a>
+                        </li>
+                        <!-- Categories -->
+                        <li class="nav-item dropdown me-lg-4">
+                            <a class="nav-link fw-bolder dropdown-toggle py-lg-4" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Categories
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for category in categories %}
+                                <li><a class="dropdown-item"
+                                        href="{% url 'website:category' category.id %}">{{category.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- / Main Navigation-->
+
+                <!-- Navbar Icons-->
+                <ul class="list-unstyled mb-0 d-flex align-items-center">
+
+                    <!-- Navbar Toggle Icon-->
+                    <li class="d-inline-block d-lg-none">
+                        <button
+                            class="btn btn-link px-2 text-decoration-none navbar-toggler border-0 d-flex align-items-center"
+                            data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="ri-menu-line ri-lg align-middle"></i>
+                        </button>
+                    </li>
+                    <!-- /Navbar Toggle Icon-->
+
+                    <!-- Navbar Search-->
+                    <li class="ms-1 d-inline-block">
+                        <button class="btn btn-link px-2 text-decoration-none d-flex align-items-center" data-pr-search>
+                            <i class="ri-search-2-line ri-lg align-middle"></i>
+                        </button>
+                    </li>
+                    <!-- /Navbar Search-->
+
+                </ul>
+                <!-- Navbar Icons-->
+
+            </div>
+        </div>
+    </nav>
+    <!-- / Navbar-->
+    <!-- / Navbar-->
+
+    {% block content %}
+
+    {% endblock %}
+
+    <footer class="bg-dark mt-10  ">
+
+        <!-- Footer socials-->
+        <div class="bg-light py-4">
+            <div class="container d-flex justify-content-center align-items-center py-2">
+                <p class="lead fw-bolder mb-0 lh-1">Find us online</p>
+                <ul class="list-unstyled d-flex justify-content-start align-items-center mb-0 ms-3 lh-1">
+                    <li class="mx-1 mb-0 lh-1"><a
+                            class="text-muted text-decoration-none opacity-75-hover transition-all lh-1" href="#"><i
+                                class="ri-instagram-fill ri-xl lh-1"></i></a></li>
+                    <li class="mx-1 mb-0 lh-1"><a
+                            class="text-muted text-decoration-none opacity-75-hover transition-all lh-1" href="#"><i
+                                class="ri-facebook-fill ri-xl lh-1"></i></a></li>
+                    <li class="mx-1 mb-0 lh-1"><a
+                            class="text-muted text-decoration-none opacity-75-hover transition-all lh-1" href="#"><i
+                                class="ri-twitter-fill ri-xl lh-1"></i></a></li>
+                    <li class="mx-1 mb-0 lh-1"><a
+                            class="text-muted text-decoration-none opacity-75-hover transition-all lh-1" href="#"><i
+                                class="ri-snapchat-fill ri-xl lh-1"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- / Footer socials-->
+        <!-- Info Bar-->
+        <div class="container mt-7">
+            <div class="row">
+
+                <!-- Info box-->
+                <div class="col-12 col-md-4 mb-3 mb-xxl-0 text-white" data-aos="fade-left">
+                    <div
+                        class="border-white-opacity border-2 p-4 d-flex flex-column flex-lg-row justify-content-start align-items-start h-100">
+                        <i class="ri-questionnaire-line ri-lg mb-3 mb-lg-0"></i>
+                        <div class="ms-lg-4">
+                            <p class="mb-1 lh-1 fw-bold">Customer Services</p>
+                            <small class="text-muted">Excellent Customer
+                                Service</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Info box-->
+
+                <!-- Info box-->
+                <div class="col-12 col-md-4 mb-3 mb-xxl-0 text-white" data-aos="fade-left" data-aos-delay="250">
+                    <div
+                        class="border-white-opacity border-2 p-4 d-flex flex-column flex-lg-row justify-content-start align-items-start h-100">
+                        <i class="ri-truck-line ri-lg mb-3 mb-lg-0"></i>
+                        <div class="ms-lg-4">
+                            <p class="mb-1 lh-1 fw-bold">Prompt Delivery</p>
+                            <small class="text-muted">Fast and Safe delivery</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Info box-->
+
+                <!-- Info box-->
+                <div class="col-12 col-md-4 mb-3 mb-xxl-0 text-white" data-aos="fade-left" data-aos-delay="500">
+                    <div
+                        class="border-white-opacity border-2 p-4 d-flex flex-column flex-lg-row justify-content-start align-items-start h-100">
+                        <i class="ri-repeat-line ri-lg mb-3 mb-lg-0"></i>
+                        <div class="ms-lg-4">
+                            <p class="mb-1 lh-1 fw-bold">Returns</p>
+                            <small class="text-muted">7 days money-back returns if you change your mind</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Info box-->
+
+            </div>
+        </div>
+        <!-- / Info Bar-->
+
+        <!-- Menus & Newsletter-->
+        <div class="border-top-white-opacity py-7 mt-7 text-white">
+            <div class="container" data-aos="fade-in">
+                <div class="row my-4 flex-wrap">
+
+                    <!-- Footer Nav-->
+                    <nav class="col-6 col-md mb-4 mb-md-0">
+                        <h6 class="mb-4 fw-bolder fs-6">Product</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a
+                                    class="text-decoration-none text-white opacity-75 opacity-25-hover transition-all"
+                                    href="./category.html">Menswear</a></li>
+                            <li class="mb-2"><a
+                                    class="text-decoration-none text-white opacity-75 opacity-25-hover transition-all"
+                                    href="./category.html">Womenswear</a></li>
+                            <li class="mb-2"><a
+                                    class="text-decoration-none text-white opacity-75 opacity-25-hover transition-all"
+                                    href="./category.html">Kidswear</a></li>
+                            <li class="mb-2"><a
+                                    class="text-decoration-none text-white opacity-75 opacity-25-hover transition-all"
+                                    href="./category.html">New Arrivals</a></li>
+                        </ul>
+                    </nav>
+                    <!-- /Footer Nav-->
+
+                    <!-- Footer Nav-->
+                    <nav class="col-6 col-md mb-4 mb-md-0">
+                        <h6 class="mb-4 fw-bolder fs-6">Company</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a
+                                    class="text-decoration-none text-white opacity-75 opacity-25-hover transition-all"
+                                    href="#">About Us</a></li>
+                            <li class="mb-2"><a
+                                    class="text-decoration-none text-white opacity-75 opacity-25-hover transition-all"
+                                    href="#">Our Blog</a></li>
+                            <li class="mb-2"><a
+                                    class="text-decoration-none text-white opacity-75 opacity-25-hover transition-all"
+                                    href="#">FAQs</a></li>
+                            <li class="mb-2"><a
+                                    class="text-decoration-none text-white opacity-75 opacity-25-hover transition-all"
+                                    href="#">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <!-- /Footer Nav-->
+
+
+                    <!-- Footer Contact-->
+                    <div class="col-12 col-md-5">
+                        <h6 class="mb-4 fw-bolder fs-6">Join Our Newsletter</h6>
+                        <p class="opacity-75">Sign up for our weekly newsletter and you'll be the first to know if
+                            we
+                            upload a new product. <small>By subscribing to our mailing list you agree to our
+                                terms and
+                                conditions.</small></p>
+                        <form
+                            class="bg-white d-flex justify-content-start align-items-center border-dark-focus-within transition-all mt-4"
+                            action="{% url 'website:newsletter' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group m-0">
+                                <input type="text" class="form-control d-flex flex-grow-1 border-0 bg-transparent py-3"
+                                    placeholder="Enter your email" aria-label="Enter your email" name="email">
+                                <span class="input-group-text bg-transparent border-0"><i
+                                        class="ri-arrow-right-line align-middle"></i></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /Footer Contact-->
+
+                </div>
+                <div
+                    class="border-top-white-opacity justify-content-between flex-column flex-md-row align-items-center d-flex pt-6 mt-6 px-0">
+                    <p class="small opacity-75">&copy; 2022 Jamilahome All Rights Reserved. Powered by <a
+                            class="text-white" href="javascript:void(0)">KPS Technologies</a></p>
+                    <nav>
+                        <ul class="list-unstyled">
+                            <li class="d-inline-block me-1 bg-white rounded px-2 pt-1"><i
+                                    class="pi pi-paypal pi-sm"></i>
+                            </li>
+                            <li class="d-inline-block me-1 bg-white rounded px-2 pt-1"><i
+                                    class="pi pi-mastercard pi-sm"></i>
+                            </li>
+                            <li class="d-inline-block me-1 bg-white rounded px-2 pt-1"><i
+                                    class="pi pi-american-express pi-sm"></i></li>
+                            <li class="d-inline-block bg-white rounded px-2 pt-1"><i class="pi pi-visa pi-sm"></i>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Menus & Newsletter-->
+
+    </footer>
+    <!-- / Footer-->
+    <!-- / Footer-->
+
+
+    <!-- Review Offcanvas-->
+    <div class="offcanvas offcanvas-end d-none" tabindex="-1" id="offcanvasReview">
+        <div class="offcanvas-header d-flex align-items-center">
+            <h5 class="offcanvas-title" id="offcanvasReviewLabel">Please Leave A Review</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Review Form -->
+            <form action="{% url 'website:review_product' product.prod_id %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group mb-3 mt-2">
+                    <label class="form-label" for="formReviewName">Your Name</label>
+                    <input type="text" class="form-control" id="formReviewName" name="user" placeholder="Your Name">
+                </div>
+                <div class="form-group mb-3 mt-2">
+                    <label class="form-label" for="formReviewEmail">Your Email</label>
+                    <input type="text" class="form-control" id="formReviewEmail" name="email" placeholder="Your Email">
+                </div>
+                <div class="form-group mb-3 mt-2">
+                    <label class="form-label" for="formReviewTitle">Your Review Title</label>
+                    <input type="text" class="form-control" id="formReviewTitle" name="title"
+                        placeholder="Review Title">
+                </div>
+                <div class="form-group mb-3 mt-2">
+                    <label class="form-label" for="formReviewReview">Your Review</label>
+                    <textarea class="form-control" name="review" id="formReviewReview" cols="30" rows="5"
+                        placeholder="Your Review"></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark hover-lift hover-boxshadow">Submit Review</button>
+            </form>
+            <!-- / Review Form-->
+        </div>
+    </div>
+    <!-- Search Overlay-->
+    <section class="search-overlay">
+        <div class="container search-container">
+            <div class="py-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="lead lh-1 m-0 fw-bold">What are you looking for?</p>
+                    <button class="btn btn-light btn-close-search"><i class="ri-close-circle-line align-bottom"></i>
+                        Close search</button>
+                </div>
+                <form>
+                    <input type="text" class="form-control" id="searchForm"
+                        placeholder="Search by product or category name...">
+                </form>
+                <div class="my-5">
+                    <p class="lead fw-bolder">{{num_of_results}} results found for <span
+                            class="fw-bold">"{{search_query}}"</span></p>
+                    <div class="row">
+                    </div>
+                </div>
+
+                <div class="bg-dark p-4 text-white">
+                    <p class="lead m-0">Didn't find what you are looking for? <a
+                            class="transition-all opacity-50-hover text-white text-link-border border-white pb-1 border-2"
+                            href="#">Send us a message.</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Theme JS -->
+    <!-- Vendor JS -->
+    <script src="{% static 'assets/js/vendor.bundle.js' %}"></script>
+
+    <!-- Theme JS -->
+    <script src="{% static 'assets/js/theme.bundle.js' %}"></script>
+</body>
+
+</html>

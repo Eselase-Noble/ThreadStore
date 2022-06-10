@@ -1,0 +1,173 @@
+{% extends 'dashboard_v2/base.html' %}
+
+{% block pagetitle %} Order Details {% endblock %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>{{product.title}}</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard_v2:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Orders</li>
+                <li class="breadcrumb-item active">Order Details</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- Admin User creation form starts -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="">
+                    {% if perms.dashboard.delete_order %}
+                    <form action="{% url 'dashboard_v2:delete_order' %}" method="POST" class="deletion-forms"
+                        style="display: inline;">
+                        {% csrf_token %}
+                        <input type="text" value="{{order.order_id}}" name="order_id" hidden>
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Order Preview</h5>
+
+                        <hr>
+
+                        <div class="row">
+                            <!-- <br> -->
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Order ID</b>
+                                <p class="card-text m-0">{{order.order_id}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Buyer</b>
+                                <p class="card-text m-0">{{order.user.fullname}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Merchant</b>
+                                <p class="card-text m-0">{{order.merchant.fullname}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Order Address</b>
+                                <p class="card-text m-0">{{order.address}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Order Location</b>
+                                <p class="card-text m-0">{{order.location}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Amount</b>
+                                <p class="card-text m-0">{{order.get_amount}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Status</b>
+                                <p class="card-text m-0">{{order.status}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Payment Mode</b>
+                                <p class="card-text m-0">{{order.payment_method}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Mobile</b>
+                                <p class="card-text m-0">{{order.mobile}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Delivery Status</b>
+                                <p class="card-text m-0">
+                                    {% if order.delivered %} <a href="javascript:void(0)"
+                                        class="btn btn-primary btn-sm">Delivered</a> {% else %} <a
+                                        href="javascript:void(0)" class="btn btn-danger btn-sm">Not Delivered</a>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Date Ordered</b>
+                                <p class="card-text m-0">{{order.created_at}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-12 mb-3 mb-lg-3">
+                                <b>Date Updated</b>
+                                <p class="card-text m-0">{{order.updated_at}}</p>
+                            </div>
+                        </div>
+                        <!-- details end -->
+                        <hr>
+                        <!-- review -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="bg-white">
+                                    <h5 class="card-title">Order Items</h5>
+                                    <p>List of items in this order</p>
+                                    <div class="table-responsive">
+                                        <!-- Table with stripped rows -->
+                                        <table class="table datatable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Amount</th>
+                                                    <th scope="col">Delivered</th>
+                                                    <th scope="col">Rejected</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% if items %}
+                                                {% for item in items %}
+                                                <tr>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td>{{item.product.title}}</td>
+                                                    <td><code>{{item.quantity}}</code></td>
+                                                    <td>{{item.total}}</td>
+                                                    <td>{{item.delivered}}</td>
+                                                    <td>{{item.rejected}}</td>
+                                                    <td>{{item.status}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                                {% else %}
+                                                <tr>
+                                                    <td colspan="12" class="text-center">No Item Found!</td>
+                                                </tr>
+                                                {% endif %}
+                                            </tbody>
+                                        </table>
+                                        <!-- End Table with stripped rows -->
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- review ends-->
+                        <hr>
+                        <div class="row">
+                            {% if perms.dashboard.change_order_status %}
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="form-check form-check-flat form-check-primary form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="action" value="approved" class="form-check-input"
+                                            {% if order.approved %} checked {% endif %}>
+                                        Approved
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <button class="btn btn-sm btn-primary"><i class="bi bi-save"></i> Save</button>
+                                </div>
+                            </form>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+{% endblock %}
